@@ -1,0 +1,13 @@
+<!-- <?xml version="1.0" encoding="UTF-8"?> -->
+<!-- <Context > -->
+<!-- 	<ResourceLink name="jdbc/eavertizare" global="jdbc/mydb" -->
+<!-- 		type="javax.sql.DataSource" /> -->
+		
+<!-- 	<Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" -->
+<!-- 		maxActive="100" maxIdle="30" maxWait="10000" global="jdbc/mydb" -->
+<!-- 		password="free" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/eavertizare" -->
+<!-- 		username="root" /> -->
+<!-- </Context> -->
+<!-- <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" maxActive="100" 
+	maxIdle="30" maxWait="10000" name="jdbc/centricdb" password="free" type="javax.sql.DataSource" 
+	url="jdbc:mysql://localhost:3306/centricdb" username="root"/> -->

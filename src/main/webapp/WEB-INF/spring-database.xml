@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/jee
+    http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<!-- - See more at: http://java2novice.com/spring/qualifier-annotation/#sthash.0asAvZ71.dpuf -->
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing 
+		infrastructure -->
+
+	<!-- Enables the Spring MVC @Controller programming model -->
+
+	<context:annotation-config />
+	<context:component-scan base-package="md.eavertizare" />
+
+
+	<!-- <bean id="dataSource" -->
+	<!-- class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
+	<!-- <property name="driverClassName" value="com.mysql.jdbc.Driver" /> -->
+	<!-- <property name="url" value="jdbc:mysql://localhost:3306/eavertizare" 
+		/> -->
+	<!-- <property name="username" value="root" /> -->
+	<!-- <property name="password" value="free" /> -->
+	<!-- </bean> -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/eavertizareweb" />
+		<property name="username" value="root" />
+		<property name="password" value="free" />
+	</bean>
+
+	<!-- Hibernate 4 SessionFactory Bean definition -->
+	<bean id="hibernate4AnnotatedSessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<!-- <value>com.journaldev.spring.model.Person</value> -->
+				<value>md.eavertizare.model.Client</value>
+				<value>md.eavertizare.model.Company</value>
+				<value>md.eavertizare.model.User</value>
+				<value>md.eavertizare.model.UserRole</value>
+
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+
+			</props>
+		</property>
+	</bean>
+
+	<!-- <beans:bean id="personDAO" class="com.journaldev.spring.dao.PersonDAOImpl"> -->
+	<!-- <beans:property name="sessionFactory" -->
+	<!-- ref="hibernate4AnnotatedSessionFactory" /> -->
+	<!-- </beans:bean> -->
+	<!-- <beans:bean id="personService" -->
+	<!-- class="com.journaldev.spring.service.PersonServiceImpl"> -->
+	<!-- <beans:property name="personDAO" ref="personDAO"></beans:property> -->
+	<!-- </beans:bean> -->
+
+	<tx:annotation-driven transaction-manager="transactionManager"
+		proxy-target-class="true" />
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</bean>
+
+	<!-- <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean"> -->
+	<!-- <property name="jndiName" value="java:comp/env/jdbc/eavertizare"/> -->
+	<!-- </bean> -->
+	<!-- <jee:jndi-lookup id="dataSource" jndi-name="jdbc/eavertizare" -->
+	<!-- resource-ref="true" /> -->
+
+
+	<bean id="userDao" class="md.eavertizare.dao.impl.UserDaoImpl">
+		<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</bean>
+	<bean id="userService" class="md.eavertizare.service.impl.UserServiceImpl">
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+	
+	<bean id="userRoleDao" class="md.eavertizare.dao.impl.UserRoleDaoImpl">
+		<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</bean>
+	<bean id="userRoleService" class="md.eavertizare.service.impl.UserRoleServiceImpl">
+		<property name="userRoleDao" ref="userRoleDao"></property>
+	</bean>
+	
+	<bean id="companyDao" class="md.eavertizare.dao.impl.CompanyDaoImpl">
+		<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</bean>
+	<bean id="companyService" class="md.eavertizare.service.impl.CompanyServiceImpl">
+		<property name="companyDao" ref="companyDao"></property>
+	</bean>
+	
+	<bean id="clientDao" class="md.eavertizare.dao.impl.ClientDaoImpl">
+		<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</bean>
+	<bean id="clientService" class="md.eavertizare.service.impl.ClientServiceImpl">
+		<property name="clientDao" ref="clientDao"></property>
+	</bean>
+
+</beans>
